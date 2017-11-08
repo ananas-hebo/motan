@@ -249,6 +249,11 @@
                     <xsd:documentation><![CDATA[ 开启gzip压缩的阈值.usegz开关开启，且传输数据大于此阈值时，才会进行gzip压缩。只有compressMotan的codec才能支持 ]]></xsd:documentation>
                 </xsd:annotation>
             </xsd:attribute>
+            <xsd:attribute name="default" type="xsd:string" use="optional">
+	            <xsd:annotation>
+	                <xsd:documentation><![CDATA[ is default baseConfig ]]></xsd:documentation>
+	            </xsd:annotation>    
+	       </xsd:attribute>
             <xsd:attribute name="codec" type="xsd:string" use="optional">
                     <xsd:annotation>
                         <xsd:documentation><![CDATA[ 协议编码. ]]></xsd:documentation>
