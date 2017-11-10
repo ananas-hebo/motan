@@ -36,6 +36,10 @@ import java.util.Arrays;
 public class RefererConfigBean<T> extends RefererConfig<T> implements FactoryBean<T>, BeanFactoryAware, InitializingBean, DisposableBean {
 
     private static final long serialVersionUID = 8381310907161365567L;
+    
+    private static final String BASICCONFIG_CONFIG_SUFFIX = ".BasicConfig";
+    private static final String PROTOCOLS_CONFIG_SUFFIX = ".Protocols";
+    private static final String REGISTRY_CONFIG_SUFFIX = ".Registry";
 
     private transient BeanFactory beanFactory;
 
@@ -88,6 +92,16 @@ public class RefererConfigBean<T> extends RefererConfig<T> implements FactoryBea
                     MotanNamespaceHandler.basicRefererConfigDefineNames.addAll(Arrays.asList(basicRefererConfigNames));
                 }
             }
+            
+            String basicConfigName = getInterfacePackage(BASICCONFIG_CONFIG_SUFFIX);
+            if (basicConfigName!=null && MotanNamespaceHandler.basicRefererConfigDefineNames.contains(basicConfigName)) {
+            	Object biConfig = beanFactory.getBean(basicConfigName, BasicRefererInterfaceConfig.class);
+                if (biConfig != null) {
+                	setBasicReferer((BasicRefererInterfaceConfig)biConfig);
+                	return ;
+                }
+            }
+            
             for (String name : MotanNamespaceHandler.basicRefererConfigDefineNames) {
                 BasicRefererInterfaceConfig biConfig = beanFactory.getBean(name, BasicRefererInterfaceConfig.class);
                 if (biConfig == null) {
@@ -110,9 +124,18 @@ public class RefererConfigBean<T> extends RefererConfig<T> implements FactoryBea
                 && !CollectionUtil.isEmpty(getBasicReferer().getProtocols())) {
             setProtocols(getBasicReferer().getProtocols());
         }
+        
+        String configName = getInterfacePackage(PROTOCOLS_CONFIG_SUFFIX);
+        if (configName!=null && MotanNamespaceHandler.protocolDefineNames.contains(configName)) {
+        	ProtocolConfig pc = beanFactory.getBean(configName, ProtocolConfig.class);
+            if (pc != null) {
+            	setProtocol(pc);
+            }
+        }
+        
         if (CollectionUtil.isEmpty(getProtocols())) {
             for (String name : MotanNamespaceHandler.protocolDefineNames) {
-                ProtocolConfig pc = beanFactory.getBean(name, ProtocolConfig.class);
+            	ProtocolConfig pc = beanFactory.getBean(name, ProtocolConfig.class);
                 if (pc == null) {
                     continue;
                 }
@@ -127,6 +150,10 @@ public class RefererConfigBean<T> extends RefererConfig<T> implements FactoryBea
             setProtocol(MotanFrameworkUtil.getDefaultProtocolConfig());
         }
     }
+    
+    private String getInterfacePackage(String suffix) {
+		return getInterface() != null ? getInterface().getPackage().getName() + suffix : null;
+    }
 
     /**
      * 检查并配置registry
@@ -136,6 +163,15 @@ public class RefererConfigBean<T> extends RefererConfig<T> implements FactoryBea
                 && !CollectionUtil.isEmpty(getBasicReferer().getRegistries())) {
             setRegistries(getBasicReferer().getRegistries());
         }
+        
+        String configName = getInterfacePackage(REGISTRY_CONFIG_SUFFIX);
+        if (configName!=null && MotanNamespaceHandler.registryDefineNames.contains(configName)) {
+        	RegistryConfig rc = beanFactory.getBean(configName, RegistryConfig.class);
+            if (rc != null) {
+            	setRegistry(rc);
+            }
+        }
+        
         if (CollectionUtil.isEmpty(getRegistries())) {
             for (String name : MotanNamespaceHandler.registryDefineNames) {
                 RegistryConfig rc = beanFactory.getBean(name, RegistryConfig.class);
