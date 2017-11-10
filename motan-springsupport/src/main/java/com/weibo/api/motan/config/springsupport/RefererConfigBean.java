@@ -126,12 +126,12 @@ public class RefererConfigBean<T> extends RefererConfig<T> implements FactoryBea
         }
         
         String configName = getInterfacePackage(PROTOCOLS_CONFIG_SUFFIX);
-        if (configName!=null && MotanNamespaceHandler.protocolDefineNames.contains(configName)) {
-        	ProtocolConfig pc = beanFactory.getBean(configName, ProtocolConfig.class);
-            if (pc != null) {
-            	setProtocol(pc);
-            }
-        }
+		if (configName != null && MotanNamespaceHandler.protocolDefineNames.contains(configName)) {
+			ProtocolConfig pc = beanFactory.getBean(configName, ProtocolConfig.class);
+			if (pc != null) {
+				setProtocol(pc);
+			}
+		}
         
         if (CollectionUtil.isEmpty(getProtocols())) {
             for (String name : MotanNamespaceHandler.protocolDefineNames) {
@@ -165,12 +165,12 @@ public class RefererConfigBean<T> extends RefererConfig<T> implements FactoryBea
         }
         
         String configName = getInterfacePackage(REGISTRY_CONFIG_SUFFIX);
-        if (configName!=null && MotanNamespaceHandler.registryDefineNames.contains(configName)) {
-        	RegistryConfig rc = beanFactory.getBean(configName, RegistryConfig.class);
-            if (rc != null) {
-            	setRegistry(rc);
-            }
-        }
+		if (configName != null && MotanNamespaceHandler.registryDefineNames.contains(configName)) {
+			RegistryConfig rc = beanFactory.getBean(configName, RegistryConfig.class);
+			if (rc != null) {
+				setRegistry(rc);
+			}
+		}
         
         if (CollectionUtil.isEmpty(getRegistries())) {
             for (String name : MotanNamespaceHandler.registryDefineNames) {
